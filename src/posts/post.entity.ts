@@ -3,8 +3,9 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
-
+import Comment from '../comments/comment.entity';
 @Entity()
 export default class Post {
   @PrimaryGeneratedColumn('uuid')
@@ -20,4 +21,10 @@ export default class Post {
   content: string;
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(
+    type => Comment,
+    comment => comment.post,
+  )
+  comments: Comment[];
 }

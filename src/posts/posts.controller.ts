@@ -6,7 +6,9 @@ import {
   Post,
   Param,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import PostsService from './posts.service';
 import PostEntity from './post.entity';
 
@@ -18,7 +20,7 @@ export default class PostController {
   async createPost(@Body() post: PostEntity): Promise<PostEntity> {
     return this.postService.create(post);
   }
-
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   async getAllPosts(): Promise<PostEntity[]> {
     return this.postService.findAll();

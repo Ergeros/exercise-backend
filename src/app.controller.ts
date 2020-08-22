@@ -1,12 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Post, UseGuards, Get, Body } from '@nestjs/common';
+
+import { AuthGuard } from '@nestjs/passport';
+import { AuthService } from './auth/auth.service';
+import User from './users/user.entity';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly authService: AuthService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('login')
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  async login(@Body() user: User): Promise<any> {
+    return this.authService.login(user);
+  }
+
+  @Post('register')
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  async register(@Body() user: User): Promise<any> {
+    return this.authService.register(user);
   }
 }
