@@ -3,10 +3,7 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  BeforeInsert,
 } from 'typeorm';
-
-import bcrypt from 'bcryptjs';
 
 @Entity()
 export default class User {

@@ -22,7 +22,6 @@ export default class PostController {
   ) {}
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async getAllPosts(): Promise<PostEntity[]> {
     return this.postService.findAll();
   }
@@ -31,26 +30,28 @@ export default class PostController {
   async getPostById(@Param('id') id: string): Promise<PostEntity> {
     return this.postService.findOne(id);
   }
-  //@UseGuards(AuthGuard('jwt'))
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createPost(@Body() post: PostEntity): Promise<PostEntity> {
     return this.postService.create(post);
   }
 
-  //@UseGuards(AuthGuard('jwt'))
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   async updatePost(
     @Param('id') id: string,
     @Body() updatedPost: PostEntity,
   ): Promise<UpdateResult> {
     return this.postService.updateOne(id, updatedPost);
   }
-  //@UseGuards(AuthGuard('jwt'))
+
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   async deletePost(@Param('id') id: string): Promise<DeleteResult> {
     return this.postService.delete(id);
   }
   @Post(':id/comments')
+  @UseGuards(JwtAuthGuard)
   async createPostComments(
     @Param('id') id: string,
     @Body() comment: Comment,
