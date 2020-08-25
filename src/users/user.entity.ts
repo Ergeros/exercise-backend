@@ -27,9 +27,4 @@ export default class User {
 
   @CreateDateColumn()
   registered: Date;
-
-  @BeforeInsert()
-  async hashPassword(): Promise<void> {
-    this.password = await bcrypt.hash(this.password, 10);
-  }
 }

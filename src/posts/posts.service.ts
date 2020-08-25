@@ -1,6 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, DeleteResult } from 'typeorm';
+import { Repository, DeleteResult, UpdateResult } from 'typeorm';
 import Post from './post.entity';
 
 @Injectable()
@@ -22,8 +22,8 @@ export default class PostsService {
     return await this.postRepository.save(post);
   }
 
-  public async updateOne(post: Post): Promise<Post> {
-    return await this.postRepository.save(post);
+  public async updateOne(id: string, post: Post): Promise<UpdateResult> {
+    return await this.postRepository.update(id, post);
   }
 
   public async delete(id: string): Promise<DeleteResult> {

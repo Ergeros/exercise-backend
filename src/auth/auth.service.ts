@@ -1,41 +1,73 @@
-import { Injectable } from '@nestjs/common';
-import bcrypt from 'bcryptjs';
-import { UsersService } from '../users/users.service';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt';
+import User from 'src/users/user.entity';
+import RegisterUserDTO from './registerUser.dto';
 import { JwtService } from '@nestjs/jwt';
-import User from '../users/user.entity';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
-    console.log(user);
-    if (user && (await this.passwordsAreEqual(user.password, pass))) {
-      const { password, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async login(user: any): Promise<any> {
-    const payload = { email: user.email, sub: user.id };
-    return {
-      access_token: this.jwtService.sign(payload),
-    };
+  public async register(user: any): Promise<User> {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    try {
+      user.password = hashedPassword;
+      const createdUser = await this.userService.createUser({
+        ...user,
+        password: hashedPassword,
+      });
+      createdUser.password = undefined;
+      return createdUser;
+    } catch (error) {
+      if (error?.code === '23505') {
+        throw new HttpException(
+          'User with that email already exists',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      throw new HttpException(
+        'Something went wrong',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+  public async getAuthenticatedUser(
+    email: string,
+    plainTextPassword: string,
+  ): Promise<User> {
+    try {
+      const user = await this.userService.findByEmail(email);
+      await this.verifyPassword(plainTextPassword, user.password);
+      user.password = undefined;
+      return user;
+    } catch (error) {
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
-  async register(user: User): Promise<User> {
-    return this.usersService.createUser(user);
-  }
-
-  private async passwordsAreEqual(
+  private async verifyPassword(
+    plainTextPassword: string,
     hashedPassword: string,
-    plainPassword: string,
-  ): Promise<boolean> {
-    return await bcrypt.compare(plainPassword, hashedPassword);
+  ) {
+    const isPasswordMatching = await bcrypt.compare(
+      plainTextPassword,
+      hashedPassword,
+    );
+    if (!isPasswordMatching) {
+      throw new HttpException(
+        'Wrong credentials provided',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+  public signJwtToken(userId: string) {
+    return this.jwtService.sign({ userId });
   }
 }

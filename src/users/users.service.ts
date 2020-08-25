@@ -11,10 +11,13 @@ export class UsersService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  public async findOne(email: string): Promise<User> {
-    return this.userRepository.findOne({ where: { email } });
+  public async findByEmail(email: string): Promise<User> {
+    return await this.userRepository.findOne({ email });
+  }
+  public async findById(id: string): Promise<User> {
+    return await this.userRepository.findOne(id);
   }
   public async createUser(user: User): Promise<User> {
-    return this.userRepository.save(user);
+    return await this.userRepository.save(user);
   }
 }

@@ -19,6 +19,10 @@ export default class Post {
 
   @Column()
   content: string;
+
+  @Column()
+  imagePath: string;
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -7,6 +7,8 @@ services:
       - 8000:3000
     depends_on:
       - postgres
+    volumes:
+      - webapp:/var/lib/data
   postgres:
     image: postgres:latest
     container_name: postgres_db
@@ -20,4 +22,6 @@ services:
       - postgre:/var/lib/postgresql/data
 volumes:
   postgre:
+    driver: local
+  webapp:
     driver: local
