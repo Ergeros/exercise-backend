@@ -4,8 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import Comment from '../comments/comment.entity';
+import User from '../users/user.entity';
 @Entity()
 export default class Post {
   @PrimaryGeneratedColumn('uuid')
@@ -27,8 +29,13 @@ export default class Post {
   createdAt: Date;
 
   @OneToMany(
-    type => Comment,
+    () => Comment,
     comment => comment.post,
   )
   comments: Comment[];
+  @ManyToOne(
+    () => User,
+    user => user.posts,
+  )
+  user: User;
 }

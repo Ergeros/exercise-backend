@@ -7,13 +7,16 @@ import {
   UploadedFile,
   Param,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from './utils';
+import JwtAuthGuard from 'src/auth/jwtAuth.guard';
 @Controller('uploads')
 export class UploadController {
   @Post()
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({

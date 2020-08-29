@@ -3,7 +3,9 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import Post from '../posts/post.entity';
 
 @Entity()
 export default class User {
@@ -24,4 +26,9 @@ export default class User {
 
   @CreateDateColumn()
   registered: Date;
+  @OneToMany(
+    () => Post,
+    post => post.user,
+  )
+  posts: Post[];
 }
