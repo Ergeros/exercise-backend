@@ -13,6 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { editFileName, imageFileFilter } from './utils';
 import JwtAuthGuard from 'src/auth/jwtAuth.guard';
+import { ApiConsumes, ApiBody } from '@nestjs/swagger';
 @Controller('uploads')
 export class UploadController {
   @Post()
@@ -26,6 +27,10 @@ export class UploadController {
       fileFilter: imageFileFilter,
     }),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Uploaded image',
+  })
   uploadFile(@UploadedFile() file) {
     return file;
   }

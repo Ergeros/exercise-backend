@@ -5,17 +5,18 @@ import {
   CreateDateColumn,
   ManyToOne,
 } from 'typeorm';
-
+import { ApiProperty } from '@nestjs/swagger';
 import Post from '../posts/post.entity';
 
 @Entity()
 export default class Comment {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: string;
-
+  @ApiProperty()
   @Column()
   content: string;
-
+  @ApiProperty()
   @Column()
   author: string;
 

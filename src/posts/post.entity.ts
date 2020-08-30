@@ -6,22 +6,25 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+
 import Comment from '../comments/comment.entity';
 import User from '../users/user.entity';
 @Entity()
 export default class Post {
+  @ApiProperty()
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
+  @ApiProperty()
   @Column()
   title: string;
-
+  @ApiProperty()
   @Column()
   perex: string;
-
+  @ApiProperty()
   @Column()
   content: string;
-
+  @ApiProperty()
   @Column()
   imagePath: string;
 

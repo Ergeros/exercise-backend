@@ -15,6 +15,7 @@ import PostEntity from './post.entity';
 import { CommentsService } from '../comments/comments.service';
 import Comment from '../comments/comment.entity';
 import JwtAuthGuard from 'src/auth/jwtAuth.guard';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 
 @Controller('posts')
 export default class PostController {
@@ -40,6 +41,10 @@ export default class PostController {
   }
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiCreatedResponse({
+    description: 'The record has been successfully created.',
+    type: PostEntity,
+  })
   async createPost(
     @Body() post: PostEntity,
     @Req() request,
