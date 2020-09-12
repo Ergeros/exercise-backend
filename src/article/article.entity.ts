@@ -5,12 +5,12 @@ import {
   CreateDateColumn,
   OneToMany,
   ManyToOne,
-} from 'typeorm';
-import { Comment } from '../comment/comment.entity';
-import { User } from 'src/user/user.entity';
+} from "typeorm";
+import { Comment } from "../comment/comment.entity";
+import { User } from "src/user/user.entity";
 @Entity()
 export class Article {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -29,12 +29,15 @@ export class Article {
   createdAt: Date;
   @OneToMany(
     () => Comment,
-    comment => comment.article,
+    (comment) => comment.article
   )
   comments: Comment[];
   @ManyToOne(
     () => User,
-    user => user.articles,
+    (user) => user.articles,
+    {
+      eager: true,
+    }
   )
   user: User;
 }

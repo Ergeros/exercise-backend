@@ -1,18 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Article } from './article.entity';
-import { ArticleRepository } from './article.repository';
-import { ArticleDTO } from './dto/article.dto';
-import { DeleteResult } from 'typeorm';
-import { ArticleRO } from './dto/article.response';
-import { UserRepository } from 'src/user/user.repository';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Article } from "./article.entity";
+import { ArticleRepository } from "./article.repository";
+import { ArticleDTO } from "./dto/article.dto";
+import { DeleteResult } from "typeorm";
+import { ArticleRO } from "./dto/article.response";
+import { UserRepository } from "src/user/user.repository";
 
 @Injectable()
 export class ArticleService {
   constructor(
     @InjectRepository(Article)
     private readonly articleRepository: ArticleRepository,
-    private readonly userRepository: UserRepository,
+    private readonly userRepository: UserRepository
   ) {}
 
   async getAllPosts(): Promise<ArticleRO[]> {

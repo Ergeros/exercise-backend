@@ -1,6 +1,7 @@
-import { IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { Exclude, Expose } from 'class-transformer';
+import { IsString } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { Exclude, Expose, Transform, Type } from "class-transformer";
+import { User } from "src/user/user.entity";
 @Exclude()
 export class ArticleRO {
   @Expose()
@@ -23,4 +24,12 @@ export class ArticleRO {
   @ApiProperty({ required: true })
   @IsString()
   readonly imagePath: string;
+  @Expose()
+  @ApiProperty({ required: true })
+  @Type(() => Date)
+  readonly createdAt: Date;
+  @Expose()
+  @ApiProperty({ required: true })
+  @Transform((user) => `${user.firstName} ${user.lastName}`)
+  user: User;
 }
