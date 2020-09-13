@@ -1,12 +1,13 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { Comment } from "../comment/comment.entity";
 import { UserRepository } from "../user/user.repository";
 import { Article } from "./article.entity";
 import { ArticleRepository } from "./article.repository";
 import { ArticleService } from "./article.service";
 import { ArticleRO } from "./dto/article.response";
 
-const mockUser: ArticleRO = {
+const mockArticle: ArticleRO = {
   id: "test",
   title: "TestTitle",
   perex: "TestPerex",
@@ -16,12 +17,23 @@ const mockUser: ArticleRO = {
   user: null,
 };
 
-const mockRepository = jest.fn(() => ({
+const mockArticleRepository = jest.fn(() => ({
   metadata: {
     columns: [],
     relations: [],
   },
-  find: jest.fn().mockResolvedValueOnce([mockUser]),
+  find: jest.fn().mockResolvedValueOnce([mockArticle]),
+  findOne: jest.fn().mockResolvedValueOnce(mockArticle),
+  findUsersPosts: jest.fn().mockResolvedValueOnce([mockArticle, mockArticle]),
+  save: jest.fn().mockResolvedValueOnce(mockArticle),
+  delete: jest.fn(),
+}));
+
+const mockUserRepository = jest.fn(() => ({
+  metadata: {
+    columns: [],
+    relations: [],
+  },
 }));
 
 describe("ArticleService", () => {
@@ -33,11 +45,11 @@ describe("ArticleService", () => {
         ArticleService,
         {
           provide: getRepositoryToken(ArticleRepository),
-          useClass: mockRepository,
+          useClass: mockArticleRepository,
         },
         {
           provide: getRepositoryToken(UserRepository),
-          useValue: mockRepository,
+          useValue: mockUserRepository,
         },
       ],
     }).compile();
@@ -52,10 +64,26 @@ describe("ArticleService", () => {
     expect(service).toBeDefined();
   });
   describe("getAllPosts", () => {
-    it("should return an array of cats", async () => {
-      //jest.spyOn(service, "getAllPosts").mockResolvedValueOnce([mockUser]);
-
-      expect(await service.getAllPosts()).toStrictEqual([mockUser]);
+    it("should return an array of articles", async () => {
+      expect(await service.getAllPosts()).toStrictEqual([mockArticle]);
+    });
+  });
+  describe("getPostById", () => {
+    it("should return article", async () => {
+      expect(await service.getPostById("test")).toStrictEqual(mockArticle);
+    });
+  });
+  describe("findUsersPosts", () => {
+    it("should return an array of articles by userId", async () => {
+      expect(await service.findUsersPosts("test")).toStrictEqual([
+        mockArticle,
+        mockArticle,
+      ]);
+    });
+  });
+  describe("updateOne", () => {
+    it("should return an array of articles by userId", async () => {
+      expect(await service.updateOne(mockArticle)).toStrictEqual(mockArticle);
     });
   });
 });

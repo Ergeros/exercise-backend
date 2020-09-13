@@ -33,7 +33,7 @@ export class ArticleService {
     return await this.articleRepository.save(newArticle);
   }
 
-  public async updateOne(id: string, post: ArticleDTO): Promise<ArticleRO> {
+  public async updateOne(post: ArticleDTO): Promise<ArticleRO> {
     return await this.articleRepository.save(post);
   }
 

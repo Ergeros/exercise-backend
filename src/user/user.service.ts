@@ -8,12 +8,12 @@ import { UserRO } from "./dto/user.response.dto";
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
   async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({ email });
+    return await this.userRepository.findByEmail(email);
   }
   async findById(id: string): Promise<User> {
-    return await this.userRepository.findOne(id);
+    return await this.userRepository.findById(id);
   }
   async createUser(user: RegisterUserDTO): Promise<UserRO> {
-    return await this.userRepository.save(user);
+    return await this.userRepository.createUser(user);
   }
 }
