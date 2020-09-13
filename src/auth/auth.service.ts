@@ -1,15 +1,15 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
-import * as bcrypt from 'bcrypt';
-import { User } from 'src/user/user.entity';
-import { JwtService } from '@nestjs/jwt';
-import { RegisterUserDTO } from 'src/auth/dto/registerUser.dto';
-import { UserRO } from 'src/user/dto/user.response.dto';
+import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
+import { UserService } from "../user/user.service";
+import * as bcrypt from "bcrypt";
+import { User } from "../user/user.entity";
+import { JwtService } from "@nestjs/jwt";
+import { RegisterUserDTO } from "../auth/dto/registerUser.dto";
+import { UserRO } from "../user/dto/user.response.dto";
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -20,21 +20,21 @@ export class AuthService {
       const createdUser = await this.userService.createUser(user);
       return createdUser;
     } catch (error) {
-      if (error?.code === '23505') {
+      if (error?.code === "23505") {
         throw new HttpException(
-          'User with that email already exists',
-          HttpStatus.BAD_REQUEST,
+          "User with that email already exists",
+          HttpStatus.BAD_REQUEST
         );
       }
       throw new HttpException(
-        'Something went wrong',
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        "Something went wrong",
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
   }
   public async getAuthenticatedUser(
     email: string,
-    plainTextPassword: string,
+    plainTextPassword: string
   ): Promise<User> {
     try {
       const user = await this.userService.findByEmail(email);
@@ -43,24 +43,24 @@ export class AuthService {
       return user;
     } catch (error) {
       throw new HttpException(
-        'Wrong credentials provided',
-        HttpStatus.BAD_REQUEST,
+        "Wrong credentials provided",
+        HttpStatus.BAD_REQUEST
       );
     }
   }
 
   private async verifyPassword(
     plainTextPassword: string,
-    hashedPassword: string,
+    hashedPassword: string
   ) {
     const isPasswordMatching = await bcrypt.compare(
       plainTextPassword,
-      hashedPassword,
+      hashedPassword
     );
     if (!isPasswordMatching) {
       throw new HttpException(
-        'Wrong credentials provided',
-        HttpStatus.BAD_REQUEST,
+        "Wrong credentials provided",
+        HttpStatus.BAD_REQUEST
       );
     }
   }

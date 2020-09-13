@@ -4,8 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
-} from 'typeorm';
-import { Article } from 'src/article/article.entity';
+} from "typeorm";
+import { Article } from "../article/article.entity";
 
 @Entity()
 export class Comment {
@@ -23,7 +23,7 @@ export class Comment {
 
   @ManyToOne(
     () => Article,
-    article => article.comments,
+    (article) => article.comments
   )
   article: Article;
 }

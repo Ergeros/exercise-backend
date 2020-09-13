@@ -5,12 +5,11 @@ import { ArticleRepository } from "./article.repository";
 import { ArticleDTO } from "./dto/article.dto";
 import { DeleteResult } from "typeorm";
 import { ArticleRO } from "./dto/article.response";
-import { UserRepository } from "src/user/user.repository";
+import { UserRepository } from "../user/user.repository";
 
 @Injectable()
 export class ArticleService {
   constructor(
-    @InjectRepository(Article)
     private readonly articleRepository: ArticleRepository,
     private readonly userRepository: UserRepository
   ) {}

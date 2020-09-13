@@ -7,7 +7,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Comment } from "../comment/comment.entity";
-import { User } from "src/user/user.entity";
+import { User } from "../user/user.entity";
 @Entity()
 export class Article {
   @PrimaryGeneratedColumn("uuid")
