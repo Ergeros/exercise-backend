@@ -1,4 +1,4 @@
-name: Push Docker Image To DOckerHub
+name: Push Docker image to DockerHub
 
 on:
   release:
