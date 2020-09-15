@@ -7,7 +7,7 @@ import { ArticleService } from "./article.service";
 
 describe("ArticleController", () => {
   let controller: ArticleController;
-  //let service: ArticleService;
+  let service: ArticleService;
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ArticleController],
