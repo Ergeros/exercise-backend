@@ -4,15 +4,15 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   OneToMany,
-} from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+} from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 
-import { Article } from '../article/article.entity';
+import { Article } from "../article/article.entity";
 
 @Entity()
 export class User {
   @ApiProperty()
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
   @ApiProperty()
   @Column()
@@ -31,7 +31,7 @@ export class User {
   registered: Date;
   @OneToMany(
     () => Article,
-    article => article.user,
+    (article) => article.owner
   )
   articles: Article[];
 }

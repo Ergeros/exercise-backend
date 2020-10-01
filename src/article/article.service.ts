@@ -28,7 +28,7 @@ export class ArticleService {
   async createPost(post: ArticleDTO, userId: string): Promise<ArticleRO> {
     const user = await this.userRepository.findOne(userId);
     const newArticle: Partial<Article> = { ...post };
-    newArticle.user = user;
+    newArticle.owner = user;
 
     return await this.articleRepository.save(newArticle);
   }

@@ -12,7 +12,6 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public async register(user: RegisterUserDTO): Promise<UserRO> {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     try {

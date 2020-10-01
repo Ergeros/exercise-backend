@@ -30,6 +30,6 @@ export class ArticleRO {
   readonly createdAt: Date;
   @Expose()
   @ApiProperty({ required: true })
-  @Transform((user) => `${user.firstName} ${user.lastName}`)
-  user: User;
+  @Transform((owner) => `${owner.firstName} ${owner.lastName}`)
+  owner: User;
 }

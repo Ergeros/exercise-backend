@@ -39,5 +39,5 @@ export class Article {
       eager: true,
     }
   )
-  user: User;
+  owner: User;
 }

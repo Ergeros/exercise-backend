@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   blog_app:
     container_name: nest_backend
@@ -14,7 +14,7 @@ services:
     container_name: postgres_db
     environment:
       - POSTGRES_USER=app_user
-      - POSTGRES_PASSWORD=123456
+      - POSTGRES_PASSWORD=SuperHardPassword
       - POSTGRES_DB=blog
     ports:
       - 5432:5432

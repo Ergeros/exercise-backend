@@ -22,10 +22,11 @@ import UserRequest from "../auth/entity/userRequest.interface";
 @Controller("articles")
 @UseInterceptors(new TransformInterceptor(ArticleRO))
 export class ArticleController {
-  constructor() /* private readonly articleService: ArticleService,
-    private readonly commentService: CommentService */
-  {}
-  /* @Get()
+  constructor(
+    private readonly articleService: ArticleService,
+    private readonly commentService: CommentService
+  ) {}
+  @Get()
   async getAllPosts(): Promise<ArticleRO[]> {
     return await this.articleService.getAllPosts();
   }
@@ -56,7 +57,7 @@ export class ArticleController {
     @Param("id") id: string,
     @Body() updatedPost: ArticleRO
   ): Promise<ArticleRO> {
-    return this.articleService.updateOne(id, updatedPost);
+    return this.articleService.updateOne(updatedPost);
   }
 
   @Delete(":id")
@@ -75,5 +76,5 @@ export class ArticleController {
   @Get(":id/comments")
   async getPostComments(@Param("id") id: string): Promise<Comment[]> {
     return this.commentService.findCommentsByPostId(id);
-  } */
+  }
 }
