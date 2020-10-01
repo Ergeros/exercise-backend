@@ -21,7 +21,7 @@ const mockArticle: Article = {
   content: "TestContent1",
   imagePath: "TestPath1",
   createdAt: new Date(),
-  user: null,
+  owner: null,
   comments: [],
 };
 

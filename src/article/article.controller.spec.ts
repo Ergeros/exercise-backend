@@ -1,5 +1,8 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
+import { CommentRepository } from "../comment/comment.repository";
+import { CommentService } from "../comment/comment.service";
+import { UserRepository } from "../user/user.repository";
 import { ArticleController } from "./article.controller";
 import { Article } from "./article.entity";
 import { ArticleRepository } from "./article.repository";
@@ -11,16 +14,25 @@ describe("ArticleController", () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ArticleController],
-      /* providers: [
+      providers: [
         ArticleService,
+        CommentService,
         {
-          provide: getRepositoryToken(Article),
+          provide: getRepositoryToken(ArticleRepository),
           useClass: ArticleRepository,
         },
-      ], */
+        {
+          provide: getRepositoryToken(UserRepository),
+          useClass: UserRepository,
+        },
+        {
+          provide: getRepositoryToken(CommentRepository),
+          useClass: CommentRepository,
+        },
+      ],
     }).compile();
 
-    //service = module.get<ArticleService>(ArticleService);
+    service = module.get<ArticleService>(ArticleService);
 
     controller = module.get<ArticleController>(ArticleController);
   });

@@ -14,7 +14,7 @@ const mockArticle: ArticleRO = {
   content: "TestContent",
   imagePath: "TestPath",
   createdAt: new Date(),
-  user: null,
+  owner: null,
 };
 
 const mockArticleRepository = jest.fn(() => ({
